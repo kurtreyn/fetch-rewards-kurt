@@ -8,3 +8,25 @@ export default function ActionComponent({ children }) {
   }
   return <div></div>;
 }
+// async function submitForm(e) {
+//   e.preventDefault();
+//   const formData = new FormData(formElement);
+//   const formDataSerialized = Object.fromEntries(formData);
+//   console.log(formDataSerialized, 'formDataSerialized');
+//   const jsonObject = {
+//     ...formDataSerialized,
+//   };
+//   try {
+//     const response = await fetch(url, {
+//       method: 'POST',
+//       body: JSON.stringify(jsonObject),
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//     });
+//     // const json = await response.json();
+//     // console.log(json);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }

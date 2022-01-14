@@ -27,7 +27,8 @@ export default function FormComponent() {
     setValidated(true);
   };
 
-  async function fetchForm() {
+  async function fetchForm(e) {
+    e.preventDefault();
     fetch(`https://frontend-take-home.fetchrewards.com/form`, {
       method: 'GET',
     })
@@ -58,6 +59,33 @@ export default function FormComponent() {
       });
   }
 
+  const url = `https://frontend-take-home.fetchrewards.com/form`;
+  const formElement = document.querySelector('.form');
+
+  async function submitForm(e) {
+    e.preventDefault();
+    const formData = new FormData(formElement);
+    const formDataSerialized = Object.fromEntries(formData);
+    console.log(formDataSerialized, 'formDataSerialized');
+    const jsonObject = {
+      ...formDataSerialized,
+    };
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      },
+      body: JSON.stringify(jsonObject),
+    })
+      .then(JSON)
+      .then(function (data) {
+        console.log('Request succeeded with JSON response', data);
+      })
+      .catch(function (error) {
+        console.log('Request failed', error);
+      });
+  }
+
   return (
     <>
       <div className="container-fluid">
@@ -68,7 +96,12 @@ export default function FormComponent() {
               <h2>by: Kurt Reynolds</h2>
             </Card.Header>
             <Card.Body>
-              <Form noValidate validated={validated} onSubmit={handleSubmit}>
+              <Form
+                noValidate
+                validated={validated}
+                onSubmit={handleSubmit}
+                className="form"
+              >
                 <Row className="mb-3">
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
                     <Form.Control
@@ -125,7 +158,7 @@ export default function FormComponent() {
                   </Form.Group>
                 </Row>
 
-                <Button type="submit" id="submit-button">
+                <Button type="submit" id="submit-button" onClick={submitForm}>
                   Submit
                 </Button>
               </Form>
