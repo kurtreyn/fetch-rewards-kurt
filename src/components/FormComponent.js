@@ -13,6 +13,9 @@ import {
 
 export default function FormComponent() {
   const [validated, setValidated] = useState(false);
+  const [name, setName] = useState('Enter full name');
+  const [email, setEmail] = useState('email');
+  const [password, setPassword] = useState('password');
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -29,32 +32,25 @@ export default function FormComponent() {
       method: 'GET',
     })
       .then((response) => {
-        // console.log(response);
+        console.log(response);
         return response.json();
       })
       .then((data) => {
         if (data) {
-          // console.log(data.occupations);
-          // console.log(data);
-          // console.log(data.states);
           const occupations = data.occupations.map((occupation) => {
-            // console.log(occupation);
             return `<option>${occupation}</option>`;
           });
           document
             .querySelector('#occupations')
             .insertAdjacentHTML('afterbegin', occupations);
-          // -------------------------------
+
           const stateArray = data.states;
           const states = stateArray.map((state) => {
-            // console.log(state.name);
             return `<option>${state.name}</option>`;
           });
           document
             .querySelector('#states')
             .insertAdjacentHTML('afterbegin', states);
-
-          // -------------------------------
         }
       })
       .catch((err) => {
@@ -78,19 +74,29 @@ export default function FormComponent() {
                     <Form.Control
                       required
                       type="text"
-                      placeholder="Full name"
-                      // onKeyUp={loadForm}
+                      placeholder={name}
+                      onChange={(e) => setName(e.target.value.trim())}
                     />
                     <Form.Control.Feedback>Looking good</Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
-                    <Form.Control required type="text" placeholder="email" />
+                    <Form.Control
+                      required
+                      type="text"
+                      placeholder="email"
+                      onChange={(e) => setEmail(e.target.value.trim())}
+                    />
                     <Form.Control.Feedback>Looking good</Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
-                    <Form.Control required type="text" placeholder="password" />
+                    <Form.Control
+                      required
+                      type="text"
+                      placeholder="password"
+                      onChange={(e) => setPassword(e.target.value.trim())}
+                    />
                     <Form.Control.Feedback>Looking good</Form.Control.Feedback>
                   </Form.Group>
                 </Row>
@@ -125,6 +131,7 @@ export default function FormComponent() {
               </Form>
             </Card.Body>
           </div>
+
           {/* <Button onClick={fetchForm}>Press</Button> */}
         </div>
       </div>
