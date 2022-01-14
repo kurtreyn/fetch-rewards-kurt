@@ -41,6 +41,9 @@ export default function FormComponent() {
             // console.log(occupation);
             return `<option>${occupation}</option>`;
           });
+          document
+            .querySelector('#occupations')
+            .insertAdjacentHTML('afterbegin', occupations);
           const states = data.states
             .filter((item) => item.name)
             .map((states) => {
