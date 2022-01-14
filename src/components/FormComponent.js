@@ -89,11 +89,21 @@ export default function FormComponent() {
         }),
       }
     )
-      .then(JSON)
-      .then(function (data) {
+      .then((data) => {
         console.log('Request succeeded with JSON response', data);
+        if (data.status === 200) {
+          setName('');
+          setEmail('');
+          setPassword('');
+          setOccupation('');
+          setState('');
+          alert('Thank you for your submission');
+        } else {
+          setMessage('Submission was unsuccessful');
+          alert('Submission was unsuccessful');
+        }
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log('Request failed', error);
       });
   }
