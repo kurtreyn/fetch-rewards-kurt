@@ -20,15 +20,48 @@ export default function FormComponent() {
   const [state, setState] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleSubmit = (event) => {
-    const form = event.currentTarget;
+  async function handleSubmit(e) {
+    const form = e.currentTarget;
     if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      setValidated(true);
     }
-
-    setValidated(true);
-  };
+    const response = await fetch(
+      `https://frontend-take-home.fetchrewards.com/form`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          password: password,
+          occupation: occupation,
+          state: state,
+        }),
+      }
+    )
+      .then((data) => {
+        console.log('Request succeeded with JSON response', data);
+        if (data.status === 200) {
+          setName('');
+          setEmail('');
+          setPassword('');
+          setOccupation('');
+          setState('');
+          alert('Thank you for your submission');
+        } else {
+          setMessage('Submission was unsuccessful');
+          alert('Submission was unsuccessful');
+        }
+      })
+      .catch((error) => {
+        console.log('Request failed', error);
+      });
+  }
 
   async function fetchForm(e) {
     e.preventDefault();
@@ -62,17 +95,7 @@ export default function FormComponent() {
       });
   }
 
-  const url = `https://frontend-take-home.fetchrewards.com/form`;
-  const formElement = document.querySelector('.form');
-
   async function submitForm(e) {
-    e.preventDefault();
-    const formData = new FormData(formElement);
-    const formDataSerialized = Object.fromEntries(formData);
-    console.log(formDataSerialized, 'formDataSerialized');
-    const jsonObject = {
-      ...formDataSerialized,
-    };
     const response = await fetch(
       `https://frontend-take-home.fetchrewards.com/form`,
       {
@@ -182,14 +205,12 @@ export default function FormComponent() {
                   </Form.Group>
                 </Row>
 
-                <Button type="submit" id="submit-button" onClick={submitForm}>
+                <Button type="submit" id="submit-button" onClick={handleSubmit}>
                   Submit
                 </Button>
               </Form>
             </Card.Body>
           </div>
-
-          {/* <Button onClick={fetchForm}>Press</Button> */}
         </div>
       </div>
     </>
