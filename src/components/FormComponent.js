@@ -21,13 +21,14 @@ export default function FormComponent() {
   const [message, setMessage] = useState('');
 
   async function handleSubmit(e) {
-    const form = e.currentTarget;
-    if (form.checkValidity() === false) {
-      e.preventDefault();
-      e.stopPropagation();
-    } else {
-      setValidated(true);
-    }
+    // const form = e.currentTarget;
+    // if (form.checkValidity() === false) {
+    //   e.preventDefault();
+    //   e.stopPropagation();
+    // } else {
+    //   setValidated(true);
+    // }
+    e.preventDefault();
     const response = await fetch(
       `https://frontend-take-home.fetchrewards.com/form`,
       {
