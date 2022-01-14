@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Form,
-  Button,
-  Row,
-  Col,
-  InputGroup,
-  Control,
-  Card,
-  Label,
-} from 'react-bootstrap';
+import { Form, Button, Row, Col, Card } from 'react-bootstrap';
 
 export default function FormComponent() {
   const [validated, setValidated] = useState(false);
@@ -128,42 +119,6 @@ export default function FormComponent() {
         console.error(err);
       });
   }
-
-  // async function submitForm(e) {
-  //   const response = await fetch(
-  //     `https://frontend-take-home.fetchrewards.com/form`,
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         name: name,
-  //         email: email,
-  //         password: password,
-  //         occupation: occupation,
-  //         state: state,
-  //       }),
-  //     }
-  //   )
-  //     .then((data) => {
-  //       console.log('Request succeeded with JSON response', data);
-  //       if (data.status === 200) {
-  //         setName('');
-  //         setEmail('');
-  //         setPassword('');
-  //         setOccupation('');
-  //         setState('');
-  //         alert('Thank you for your submission');
-  //       } else {
-  //         setMessage('Submission was unsuccessful');
-  //         alert('Submission was unsuccessful');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log('Request failed', error);
-  //     });
-  // }
 
   return (
     <>

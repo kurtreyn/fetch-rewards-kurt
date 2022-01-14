@@ -6,6 +6,8 @@
 
 https://fetch-hiring.s3.amazonaws.com/frontend.html
 
+A live version of the project can be found here: https://frontendtakehomekurtreynolds.netlify.app
+
 ---
 
 ### GET Request
@@ -27,11 +29,12 @@ https://fetch-hiring.s3.amazonaws.com/frontend.html
 - if the status result is 200, reset states and display a message to the user
 - if status was unsuccessful, display message to user that the submission was unsuccessful
 - catch and log any errors
-- create function handleSubmit which lists that conditions that must be met in order for the form to be submitted
+- create function findFormErrors which lists that conditions that must be met in order for the form to be submitted
+- - the handleSubmit function calls the findFormErrors function to search for errors before proceeding the execution of submitting the POST request.
 - errors will be displayed to the user upon an unsuccessful submission
 
 ## Notes
 
-- the code is functioning properly, however there are a several things that still need to be done.
+- the code is functioning , however there are a several things that still need to be done.
 - - refactor the code in order to make it more readable
-- - prevent the green arrows that
+- - there is a bug that needs to be fixed: if user does not make a selection on occupation, tries to submit the form, user will get an error, if user then selects an occupation and tries to resubmit, the form will not submit. a page refresh is needed to continue. same issue with state dropdown. I will work to resolv the bug, however, in the interest of time, I am submitting the code in present iteration for consideration for the position.
