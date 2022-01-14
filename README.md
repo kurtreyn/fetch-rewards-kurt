@@ -2,6 +2,8 @@
 
 ## by: Kurt Reynolds
 
+### created with React.js using React Bootstrap
+
 ---
 
 https://fetch-hiring.s3.amazonaws.com/frontend.html
