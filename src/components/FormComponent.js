@@ -19,49 +19,82 @@ export default function FormComponent() {
   const [occupation, setOccupation] = useState('');
   const [state, setState] = useState('');
   const [message, setMessage] = useState('');
+  const [form, setForm] = useState({});
+  const [errors, setErrors] = useState({});
+
+  const setField = (field, value) => {
+    setForm({
+      ...form,
+      [field]: value,
+    });
+
+    if (!!errors[field])
+      setErrors({
+        ...errors,
+        [field]: null,
+      });
+  };
+
+  const findFormErrors = () => {
+    const { name, email, password, occupation, state } = form;
+    const newErrors = {};
+    if (!name || name === '') {
+      newErrors.name = 'name cannot be blank';
+    } else if (name.length > 30) {
+      newErrors.name = 'name is too long';
+    } else if (!email || email === '') {
+      newErrors.email = 'email cannot be blank';
+    } else if (!password || password === '') {
+      newErrors.password = 'password cannot be blank';
+    } else if (password.length < 6) {
+      newErrors.password = 'password must be at least 6 characters';
+    } else if (occupation === 'Select Occupation') {
+      newErrors.occupation = 'must select an occupation';
+    }
+
+    return newErrors;
+  };
 
   async function handleSubmit(e) {
-    // const form = e.currentTarget;
-    // if (form.checkValidity() === false) {
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    // } else {
-    //   setValidated(true);
-    // }
     e.preventDefault();
-    const response = await fetch(
-      `https://frontend-take-home.fetchrewards.com/form`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password,
-          occupation: occupation,
-          state: state,
-        }),
-      }
-    )
-      .then((data) => {
-        console.log('Request succeeded with JSON response', data);
-        if (data.status === 200) {
-          setName('');
-          setEmail('');
-          setPassword('');
-          setOccupation('');
-          setState('');
-          alert('Thank you for your submission');
-        } else {
-          setMessage('Submission was unsuccessful');
-          alert('Submission was unsuccessful');
+    const newErrors = findFormErrors();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      const response = await fetch(
+        `https://frontend-take-home.fetchrewards.com/form`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            password: password,
+            occupation: occupation,
+            state: state,
+          }),
         }
-      })
-      .catch((error) => {
-        console.log('Request failed', error);
-      });
+      )
+        .then((data) => {
+          console.log('Request succeeded with JSON response', data);
+          if (data.status === 200) {
+            setName('');
+            setEmail('');
+            setPassword('');
+            setOccupation('');
+            setState('');
+            alert('Thank you for your submission');
+          } else {
+            setMessage('Submission was unsuccessful');
+            alert('Submission was unsuccessful');
+          }
+        })
+        .catch((error) => {
+          console.log('Request failed', error);
+        });
+    }
   }
 
   async function fetchForm(e) {
@@ -79,7 +112,7 @@ export default function FormComponent() {
             return `<option>${occupation}</option>`;
           });
           document
-            .querySelector('#occupations')
+            .querySelector('[data-occupations]')
             .insertAdjacentHTML('afterbegin', occupations);
 
           const stateArray = data.states;
@@ -87,7 +120,7 @@ export default function FormComponent() {
             return `<option>${state.name}</option>`;
           });
           document
-            .querySelector('#states')
+            .querySelector('[data-states]')
             .insertAdjacentHTML('afterbegin', states);
         }
       })
@@ -96,41 +129,41 @@ export default function FormComponent() {
       });
   }
 
-  async function submitForm(e) {
-    const response = await fetch(
-      `https://frontend-take-home.fetchrewards.com/form`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password,
-          occupation: occupation,
-          state: state,
-        }),
-      }
-    )
-      .then((data) => {
-        console.log('Request succeeded with JSON response', data);
-        if (data.status === 200) {
-          setName('');
-          setEmail('');
-          setPassword('');
-          setOccupation('');
-          setState('');
-          alert('Thank you for your submission');
-        } else {
-          setMessage('Submission was unsuccessful');
-          alert('Submission was unsuccessful');
-        }
-      })
-      .catch((error) => {
-        console.log('Request failed', error);
-      });
-  }
+  // async function submitForm(e) {
+  //   const response = await fetch(
+  //     `https://frontend-take-home.fetchrewards.com/form`,
+  //     {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         name: name,
+  //         email: email,
+  //         password: password,
+  //         occupation: occupation,
+  //         state: state,
+  //       }),
+  //     }
+  //   )
+  //     .then((data) => {
+  //       console.log('Request succeeded with JSON response', data);
+  //       if (data.status === 200) {
+  //         setName('');
+  //         setEmail('');
+  //         setPassword('');
+  //         setOccupation('');
+  //         setState('');
+  //         alert('Thank you for your submission');
+  //       } else {
+  //         setMessage('Submission was unsuccessful');
+  //         alert('Submission was unsuccessful');
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log('Request failed', error);
+  //     });
+  // }
 
   return (
     <>
@@ -154,55 +187,76 @@ export default function FormComponent() {
                       required
                       type="text"
                       placeholder={name}
-                      onChange={(e) => setName(e.target.value.trim())}
+                      onChange={(e) => setField('name', e.target.value.trim())}
+                      isInvalid={!!errors.name}
                     />
-                    <Form.Control.Feedback>Looking good</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.name}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
                     <Form.Control
                       required
                       type="text"
-                      placeholder="email"
-                      onChange={(e) => setEmail(e.target.value.trim())}
+                      placeholder={email}
+                      onChange={(e) => setField('email', e.target.value.trim())}
+                      isInvalid={!!errors.email}
                     />
-                    <Form.Control.Feedback>Looking good</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.email}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
                     <Form.Control
                       required
                       type="text"
-                      placeholder="password"
-                      onChange={(e) => setPassword(e.target.value.trim())}
+                      placeholder={password}
+                      onChange={(e) =>
+                        setField('password', e.target.value.trim())
+                      }
+                      isInvalid={!!errors.password}
                     />
-                    <Form.Control.Feedback>Looking good</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.password}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
 
                 <Row className="mb-3">
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
-                    <Form.Select
+                    <Form.Control
+                      as="select"
                       aria-label="select occupation"
-                      id="occupations"
+                      data-occupations="occupations"
                       onClick={fetchForm}
-                      onChange={(e) => setOccupation(e.target.value)}
+                      onChange={(e) =>
+                        setField('occupation', e.target.value.trim())
+                      }
+                      isInvalid={!!errors.occupation}
                     >
                       <option>Select Occupation</option>
-                    </Form.Select>
-                    <Form.Control.Feedback>Looking good</Form.Control.Feedback>
+                    </Form.Control>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.occupation}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
-                    <Form.Select
+                    <Form.Control
+                      as="select"
                       aria-label="select state"
-                      id="states"
+                      data-states="states"
                       onClick={fetchForm}
-                      onChange={(e) => setState(e.target.value)}
+                      onChange={(e) => setField('state', e.target.value.trim())}
                     >
+                      isInvalid={!!errors.state}
                       <option>Select State</option>
-                    </Form.Select>
-                    <Form.Control.Feedback>Looking good</Form.Control.Feedback>
+                    </Form.Control>
+                    <Form.Control.Feedback type="invalid">
+                      {errors.state}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Row>
 
