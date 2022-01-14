@@ -19,9 +19,19 @@ export default function FormComponent() {
   const [occupation, setOccupation] = useState('');
   const [state, setState] = useState('');
   const [message, setMessage] = useState('');
+  const [touched, setTouched] = useState({
+    name: false,
+    email: false,
+    password: false,
+    occupation: false,
+    state: false,
+  });
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
+    console.log('Current state is:' + JSON.stringify(this.state));
+    alert('Current state is:' + JSON.stringify(this.state));
+    event.preventDefault();
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
@@ -107,6 +117,65 @@ export default function FormComponent() {
         console.log('Request failed', error);
       });
   }
+  // const renders = () => {
+  //   const errors = validate(
+  //     state.name,
+  //     state.email,
+  //     state.password,
+  //     state.occupation,
+  //     state.state
+  //   );
+  // };
+  const validate = (name, email, password, occupation, state) => {
+    const errors = {
+      name: '',
+      email: '',
+      password: '',
+      occupation: '',
+      state: '',
+    };
+    if (this.state.touched.name) {
+      if (name.length < 2) {
+        errors.name = 'Name must be at least 2 characters.';
+      }
+    }
+    const reg = /^\d+$/;
+    if (this.state.touched.email && !email.includes('@')) {
+      errors.email = 'Email should contain an @ symbol.';
+    }
+    if (this.state.touched.password) {
+      if (password.length < 2) {
+        errors.password = 'Password must be at least 6 characters.';
+      }
+    }
+    if (this.state.touched.occupation) {
+      if (occupation === 'Select Occupation') {
+        errors.occupation = 'Must select an occupation from the list';
+      }
+    }
+    if (this.state.touched.state) {
+      if (state === 'Select state') {
+        errors.state = 'Must select an state from the list';
+      }
+    }
+    return errors;
+  };
+
+  const handleBlur = (field) => () => {
+    this.setState({
+      touched: { ...this.state.touched, [field]: true },
+    });
+  };
+
+  const handleInputChange = (e) => {
+    setName(e.target.value.trim());
+    setEmail(e.target.value.trim());
+    setPassword(e.target.value.trim());
+    setOccupation(e.target.value);
+    setState(e.target.value);
+    validate();
+    // renders();
+  };
 
   return (
     <>
@@ -130,9 +199,13 @@ export default function FormComponent() {
                       required
                       type="text"
                       placeholder={name}
-                      onChange={(e) => setName(e.target.value.trim())}
+                      invalid={validate.errors.name}
+                      onBlur={handleBlur('name')}
+                      onChange={handleInputChange}
                     />
-                    <Form.Control.Feedback>Looking good</Form.Control.Feedback>
+                    <Form.Control.Feedback>
+                      {validate.errors.name}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -140,9 +213,13 @@ export default function FormComponent() {
                       required
                       type="text"
                       placeholder="email"
-                      onChange={(e) => setEmail(e.target.value.trim())}
+                      invalid={validate.errors.email}
+                      onBlur={handleBlur('email')}
+                      onChange={handleInputChange}
                     />
-                    <Form.Control.Feedback>Looking good</Form.Control.Feedback>
+                    <Form.Control.Feedback>
+                      {validate.errors.email}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
@@ -150,7 +227,9 @@ export default function FormComponent() {
                       required
                       type="text"
                       placeholder="password"
-                      onChange={(e) => setPassword(e.target.value.trim())}
+                      invalid={validate.errors.password}
+                      onBlur={handleBlur('password')}
+                      onChange={handleInputChange}
                     />
                     <Form.Control.Feedback>Looking good</Form.Control.Feedback>
                   </Form.Group>
@@ -162,7 +241,7 @@ export default function FormComponent() {
                       aria-label="select occupation"
                       id="occupations"
                       onClick={fetchForm}
-                      onChange={(e) => setOccupation(e.target.value)}
+                      onChange={handleInputChange}
                     >
                       <option>Select Occupation</option>
                     </Form.Select>
@@ -174,7 +253,7 @@ export default function FormComponent() {
                       aria-label="select state"
                       id="states"
                       onClick={fetchForm}
-                      onChange={(e) => setState(e.target.value)}
+                      onChange={handleInputChange}
                     >
                       <option>Select State</option>
                     </Form.Select>
