@@ -13,7 +13,6 @@ import {
 
 export default function FormComponent() {
   const [validated, setValidated] = useState(false);
-  const occupationContainer = document.getElementById('occupation-container');
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -36,7 +35,8 @@ export default function FormComponent() {
       .then((data) => {
         if (data) {
           // console.log(data.occupations);
-          console.log(data.states);
+          // console.log(data);
+          // console.log(data.states);
           const occupations = data.occupations.map((occupation) => {
             // console.log(occupation);
             return `<option>${occupation}</option>`;
@@ -44,16 +44,17 @@ export default function FormComponent() {
           document
             .querySelector('#occupations')
             .insertAdjacentHTML('afterbegin', occupations);
-          const states = data.states
-            .filter((item) => item.name)
-            .map((states) => {
-              return `<option>${states}</option>`;
-            });
-          // console.log(name.name);
-          // return `<option>${states}</option>`;
+          // -------------------------------
+          const stateArray = data.states;
+          const states = stateArray.map((state) => {
+            // console.log(state.name);
+            return `<option>${state.name}</option>`;
+          });
           document
             .querySelector('#states')
             .insertAdjacentHTML('afterbegin', states);
+
+          // -------------------------------
         }
       })
       .catch((err) => {
@@ -124,7 +125,7 @@ export default function FormComponent() {
               </Form>
             </Card.Body>
           </div>
-          <Button onClick={fetchForm}>Press</Button>
+          {/* <Button onClick={fetchForm}>Press</Button> */}
         </div>
       </div>
     </>
