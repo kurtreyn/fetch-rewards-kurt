@@ -88,6 +88,8 @@ export default function FormComponent() {
     }
   }
 
+  const occup = [];
+
   async function fetchForm(e) {
     e.preventDefault();
     fetch(`https://frontend-take-home.fetchrewards.com/form`, {
@@ -99,6 +101,9 @@ export default function FormComponent() {
       })
       .then((data) => {
         if (data) {
+          console.log(`data is ${data.occupations}`);
+          data.occupations.push(occup);
+          console.log(occup);
           const occupations = data.occupations.map((occupation) => {
             return `<option>${occupation}</option>`;
           });
