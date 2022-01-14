@@ -16,6 +16,9 @@ export default function FormComponent() {
   const [name, setName] = useState('Enter full name');
   const [email, setEmail] = useState('email');
   const [password, setPassword] = useState('password');
+  const [occupation, setOccupation] = useState('');
+  const [state, setState] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -70,13 +73,22 @@ export default function FormComponent() {
     const jsonObject = {
       ...formDataSerialized,
     };
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      },
-      body: JSON.stringify(jsonObject),
-    })
+    const response = await fetch(
+      `https://frontend-take-home.fetchrewards.com/form`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          password: password,
+          occupation: occupation,
+          state: state,
+        }),
+      }
+    )
       .then(JSON)
       .then(function (data) {
         console.log('Request succeeded with JSON response', data);
@@ -140,6 +152,7 @@ export default function FormComponent() {
                       aria-label="select occupation"
                       id="occupations"
                       onClick={fetchForm}
+                      onChange={(e) => setOccupation(e.target.value)}
                     >
                       <option>Select Occupation</option>
                     </Form.Select>
@@ -151,6 +164,7 @@ export default function FormComponent() {
                       aria-label="select state"
                       id="states"
                       onClick={fetchForm}
+                      onChange={(e) => setState(e.target.value)}
                     >
                       <option>Select State</option>
                     </Form.Select>
