@@ -7,7 +7,7 @@ export default function FormComponent() {
   const [name, setName] = useState('Enter full name');
   const [email, setEmail] = useState('email');
   const [password, setPassword] = useState('password');
-  const [occupation, setOccupation] = useState('');
+  const [occupation, setOccupation] = useState('select occupation');
   const [state, setState] = useState('');
   const [message, setMessage] = useState('');
   const [form, setForm] = useState({});
@@ -39,9 +39,13 @@ export default function FormComponent() {
       newErrors.password = 'password cannot be blank';
     } else if (password.length < 6) {
       newErrors.password = 'password must be at least 6 characters';
-    } else if (occupation === 'Select Occupation') {
+    } else if (!occupation || occupation === 'Select Occupation') {
       newErrors.occupation = 'must select an occupation';
+    } else if (!state || state === 'Select State') {
+      newErrors.state = 'must select a state';
     }
+    console.log(`occupation: ${form.occupation}`);
+    console.log(`state: ${form.state}`);
 
     return newErrors;
   };
