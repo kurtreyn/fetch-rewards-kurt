@@ -1,11 +1,8 @@
+// ORIGINAL FORMCOMPONENT SETTINGS
+
 import React, { useState } from 'react';
+
 import { Form, Button, Row, Col, Card } from 'react-bootstrap';
-import {
-  fetchForm,
-  handleSubmit,
-  setField,
-  findFormErrors,
-} from './ActionComponent';
 
 export default function FormComponent() {
   const [validated, setValidated] = useState(false);
@@ -17,7 +14,116 @@ export default function FormComponent() {
   const [message, setMessage] = useState('');
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
-  const occup = [];
+
+  const setField = (field, value) => {
+    setForm({
+      ...form,
+      [field]: value,
+    });
+
+    if (!!errors[field])
+      setErrors({
+        ...errors,
+        [field]: null,
+      });
+  };
+
+  const findFormErrors = () => {
+    const { name, email, password, occupation, state } = form;
+    const newErrors = {};
+    if (!name || name === '') {
+      newErrors.name = 'name cannot be blank';
+    } else if (name.length > 30) {
+      newErrors.name = 'name is too long';
+    } else if (!email || email === '') {
+      newErrors.email = 'email cannot be blank';
+    } else if (!password || password === '') {
+      newErrors.password = 'password cannot be blank';
+    } else if (password.length < 6) {
+      newErrors.password = 'password must be at least 6 characters';
+    } else if (occupation === 'Select Occupation') {
+      newErrors.occupation = 'must select an occupation';
+    }
+
+    return newErrors;
+  };
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const newErrors = findFormErrors();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      const response = await fetch(
+        `https://frontend-take-home.fetchrewards.com/form`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            password: password,
+            occupation: occupation,
+            state: state,
+          }),
+        }
+      )
+        .then((data) => {
+          console.log('Request succeeded with JSON response', data);
+          if (data.status === 200) {
+            setName('');
+            setEmail('');
+            setPassword('');
+            setOccupation('');
+            setState('');
+            alert('Thank you for your submission');
+          } else {
+            setMessage('Submission was unsuccessful');
+            alert('Submission was unsuccessful');
+          }
+        })
+        .catch((error) => {
+          console.log('Request failed', error);
+        });
+    }
+  }
+
+  async function fetchForm(e) {
+    e.preventDefault();
+    fetch(`https://frontend-take-home.fetchrewards.com/form`, {
+      method: 'GET',
+    })
+      .then((response) => {
+        console.log(response);
+        return response.json();
+      })
+      .then((data) => {
+        if (data) {
+          console.log(`data is ${data.occupations}`);
+          data.occupations.push(occup);
+          console.log(occup);
+          const occupations = data.occupations.map((occupation) => {
+            return `<option>${occupation}</option>`;
+          });
+          document
+            .querySelector('[data-occupations]')
+            .insertAdjacentHTML('afterbegin', occupations);
+
+          const stateArray = data.states;
+          const states = stateArray.map((state) => {
+            return `<option>${state.name}</option>`;
+          });
+          document
+            .querySelector('[data-states]')
+            .insertAdjacentHTML('afterbegin', states);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
   return (
     <>
