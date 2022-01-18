@@ -179,9 +179,9 @@ export default function FormComponent() {
                       data-states="states"
                       onClick={fetchForm}
                       onChange={(e) => setField('state', e.target.value.trim())}
-                    >
                       isInvalid={!!errors.state}
-                      <option>Select State</option>
+                    >
+                      <option>Select Occupation</option>
                     </Form.Control>
                     <Form.Control.Feedback type="invalid">
                       {errors.state}
