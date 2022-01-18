@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+
 export async function fetchForm(e, props) {
   e.preventDefault();
   fetch(`https://frontend-take-home.fetchrewards.com/form`, {
