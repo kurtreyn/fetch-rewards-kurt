@@ -35,6 +35,8 @@ export default function FormComponent() {
       newErrors.name = 'name is too long';
     } else if (!email || email === '') {
       newErrors.email = 'email cannot be blank';
+    } else if (!email.includes('@')) {
+      newErrors.email = 'email must contain and @ symbol';
     } else if (!password || password === '') {
       newErrors.password = 'password cannot be blank';
     } else if (password.length < 6) {
