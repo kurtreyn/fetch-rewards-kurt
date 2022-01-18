@@ -9,7 +9,7 @@ export async function fetchForm(e, props) {
     })
     .then((data) => {
       if (data) {
-        console.log(`data is ${data.occupations}`);
+        // console.log(`data is ${data.occupations}`);
         // props.occup.push(data.occupations);
         // console.log(props.occup);
         const occupations = data.occupations.map((occupation) => {
@@ -33,8 +33,8 @@ export async function fetchForm(e, props) {
     });
 }
 
-export const findFormErrors = (props) => {
-  const { name, email, password, occupation, state } = props.form;
+export const findFormErrors = ({ ...form }) => {
+  const { name, email, password, occupation, state } = form;
   const newErrors = {};
   if (!name || name === '') {
     newErrors.name = 'name cannot be blank';
