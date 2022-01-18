@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Form, Button, Row, Col, Card } from 'react-bootstrap';
 
@@ -94,37 +94,43 @@ export default function FormComponent() {
     }
   }
 
-  async function fetchForm(e) {
-    e.preventDefault();
-    fetch(`https://frontend-take-home.fetchrewards.com/form`, {
-      method: 'GET',
-    })
-      .then((response) => {
-        console.log(response);
-        return response.json();
+  useEffect(() => {
+    async function fetchForm() {
+      // e.preventDefault();
+      fetch(`https://frontend-take-home.fetchrewards.com/form`, {
+        method: 'GET',
       })
-      .then((data) => {
-        if (data) {
-          const occupations = data.occupations.map((occupation) => {
-            return `<option>${occupation}</option>`;
-          });
-          document
-            .querySelector('[data-occupations]')
-            .insertAdjacentHTML('afterbegin', occupations);
+        .then((response) => {
+          console.log(response);
+          return response.json();
+        })
+        .then((data) => {
+          if (data) {
+            // console.log(`data is ${data.occupations}`);
+            // props.occup.push(data.occupations);
+            // console.log(props.occup);
+            const occupations = data.occupations.map((occupation) => {
+              return `<option>${occupation}</option>`;
+            });
+            document
+              .querySelector('[data-occupations]')
+              .insertAdjacentHTML('afterbegin', occupations);
 
-          const stateArray = data.states;
-          const states = stateArray.map((state) => {
-            return `<option>${state.name}</option>`;
-          });
-          document
-            .querySelector('[data-states]')
-            .insertAdjacentHTML('afterbegin', states);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
+            const stateArray = data.states;
+            const states = stateArray.map((state) => {
+              return `<option>${state.name}</option>`;
+            });
+            document
+              .querySelector('[data-states]')
+              .insertAdjacentHTML('afterbegin', states);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+    fetchForm();
+  }, []);
 
   return (
     <>
@@ -191,7 +197,7 @@ export default function FormComponent() {
                       as="select"
                       aria-label="select occupation"
                       data-occupations="occupations"
-                      onClick={fetchForm}
+                      // onClick={fetchForm}
                       onChange={(e) =>
                         setField('occupation', e.target.value.trim())
                       }
@@ -209,7 +215,7 @@ export default function FormComponent() {
                       as="select"
                       aria-label="select state"
                       data-states="states"
-                      onClick={fetchForm}
+                      // onClick={fetchForm}
                       onChange={(e) => setField('state', e.target.value.trim())}
                       isInvalid={!!errors.state}
                     >
