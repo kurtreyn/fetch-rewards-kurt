@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+import { fetchForm, passMask } from './ActionComponent';
 import { Form, Button, Row, Col, Card } from 'react-bootstrap';
 
 export default function FormComponent() {
@@ -7,6 +7,7 @@ export default function FormComponent() {
   const [name, setName] = useState('Enter full name');
   const [email, setEmail] = useState('email');
   const [password, setPassword] = useState('password');
+  const [verifPass, setVerifPass] = useState('re-enter password');
   const [occupation, setOccupation] = useState('select occupation');
   const [state, setState] = useState('');
   const [message, setMessage] = useState('');
@@ -106,9 +107,6 @@ export default function FormComponent() {
         })
         .then((data) => {
           if (data) {
-            // console.log(`data is ${data.occupations}`);
-            // props.occup.push(data.occupations);
-            // console.log(props.occup);
             const occupations = data.occupations.map((occupation) => {
               return `<option>${occupation}</option>`;
             });
@@ -178,10 +176,27 @@ export default function FormComponent() {
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
                     <Form.Control
                       required
-                      type="text"
+                      data-password
+                      type="password"
                       placeholder={password}
                       onChange={(e) =>
                         setField('password', e.target.value.trim())
+                      }
+                      isInvalid={!!errors.password}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.password}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+
+                  <Form.Group as={Col} md="4" controlId="validationCustom01">
+                    <Form.Control
+                      required
+                      data-password
+                      type="password"
+                      placeholder={verifPass}
+                      onChange={(e) =>
+                        setField('verifPass', e.target.value.trim())
                       }
                       isInvalid={!!errors.password}
                     />
