@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchForm, handleSubmit, findFormErrors } from './ActionComponent';
+import { fetchForm, passMask } from './ActionComponent';
 import { Form, Button, Row, Col, Card } from 'react-bootstrap';
 
 export default function FormComponent() {
@@ -7,6 +7,7 @@ export default function FormComponent() {
   const [name, setName] = useState('Enter full name');
   const [email, setEmail] = useState('email');
   const [password, setPassword] = useState('password');
+  const [verifPass, setVerifPass] = useState('re-enter password');
   const [occupation, setOccupation] = useState('select occupation');
   const [state, setState] = useState('');
   const [message, setMessage] = useState('');
@@ -94,6 +95,41 @@ export default function FormComponent() {
     }
   }
 
+  useEffect(() => {
+    async function fetchForm() {
+      // e.preventDefault();
+      fetch(`https://frontend-take-home.fetchrewards.com/form`, {
+        method: 'GET',
+      })
+        .then((response) => {
+          console.log(response);
+          return response.json();
+        })
+        .then((data) => {
+          if (data) {
+            const occupations = data.occupations.map((occupation) => {
+              return `<option>${occupation}</option>`;
+            });
+            document
+              .querySelector('[data-occupations]')
+              .insertAdjacentHTML('afterbegin', occupations);
+
+            const stateArray = data.states;
+            const states = stateArray.map((state) => {
+              return `<option>${state.name}</option>`;
+            });
+            document
+              .querySelector('[data-states]')
+              .insertAdjacentHTML('afterbegin', states);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+    fetchForm();
+  }, []);
+
   return (
     <>
       <div className="container-fluid">
@@ -140,10 +176,27 @@ export default function FormComponent() {
                   <Form.Group as={Col} md="4" controlId="validationCustom01">
                     <Form.Control
                       required
-                      type="text"
+                      data-password
+                      type="password"
                       placeholder={password}
                       onChange={(e) =>
                         setField('password', e.target.value.trim())
+                      }
+                      isInvalid={!!errors.password}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.password}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+
+                  <Form.Group as={Col} md="4" controlId="validationCustom01">
+                    <Form.Control
+                      required
+                      data-password
+                      type="password"
+                      placeholder={verifPass}
+                      onChange={(e) =>
+                        setField('verifPass', e.target.value.trim())
                       }
                       isInvalid={!!errors.password}
                     />
@@ -159,7 +212,7 @@ export default function FormComponent() {
                       as="select"
                       aria-label="select occupation"
                       data-occupations="occupations"
-                      onClick={fetchForm}
+                      // onClick={fetchForm}
                       onChange={(e) =>
                         setField('occupation', e.target.value.trim())
                       }
@@ -177,7 +230,7 @@ export default function FormComponent() {
                       as="select"
                       aria-label="select state"
                       data-states="states"
-                      onClick={fetchForm}
+                      // onClick={fetchForm}
                       onChange={(e) => setField('state', e.target.value.trim())}
                       isInvalid={!!errors.state}
                     >

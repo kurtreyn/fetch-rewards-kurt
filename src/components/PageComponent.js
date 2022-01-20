@@ -15,15 +15,21 @@ export default function PageComponent() {
       <div className="container form-container">
         <div className="row form-row">
           <InputContainer />
+          {/* ^^FULL NAME^^ */}
           <InputContainer />
+          {/* ^^EMAIL^^ */}
         </div>
         <div className="row form-row">
           <InputContainer />
+          {/* ^^OCCUPATION^^ */}
           <InputContainer />
+          {/* ^^STATE^^ */}
         </div>
         <div className="row form-row">
           <InputContainer />
+          {/* ^^PASSWORD^^ */}
           <InputContainer />
+          {/* ^^CONFIRM PASSWORD^^ */}
         </div>
         <div className="row form-row">
           <Buttons />
