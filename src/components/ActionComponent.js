@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
+function mapAPI(items, id) {
+  items.map((item) => {
+    return `<option>${item}</option>`;
+  });
+  document.querySelector(`#${id}`).insertAdjacentHTML('afterbegin', `${items}`);
+}
+
 export async function fetchForm(e, props) {
   e.preventDefault();
   fetch(`https://frontend-take-home.fetchrewards.com/form`, {

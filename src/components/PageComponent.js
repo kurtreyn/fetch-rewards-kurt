@@ -37,6 +37,7 @@ export default function PageComponent() {
             placeholder="choose your occupation"
             onChange=""
             isInvalid=""
+            id=""
           />
 
           <InputContainer
@@ -45,6 +46,7 @@ export default function PageComponent() {
             placeholder="choose your state"
             onChange=""
             isInvalid=""
+            id=""
           />
         </div>
 
