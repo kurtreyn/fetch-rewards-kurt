@@ -3,7 +3,6 @@ import HeaderComponent from './HeaderComponent';
 import InputContainer from './InputContainer';
 import FormInput from './FormInput';
 import Buttons from './Buttons';
-
 import { fetchForm, handleSubmit, findFormErrors } from './ActionComponent';
 
 export default function PageComponent() {
@@ -14,22 +13,57 @@ export default function PageComponent() {
       </div>
       <div className="container form-container">
         <div className="row form-row">
-          <InputContainer />
-          {/* ^^FULL NAME^^ */}
-          <InputContainer />
-          {/* ^^EMAIL^^ */}
+          <InputContainer
+            required
+            type="text"
+            placeholder="full name"
+            onChange=""
+            isInvalid=""
+          />
+
+          <InputContainer
+            required
+            type="text"
+            placeholder="email"
+            onChange=""
+            isInvalid=""
+          />
         </div>
+
         <div className="row form-row">
-          <InputContainer />
-          {/* ^^OCCUPATION^^ */}
-          <InputContainer />
-          {/* ^^STATE^^ */}
+          <InputContainer
+            required
+            type="text"
+            placeholder="choose your occupation"
+            onChange=""
+            isInvalid=""
+          />
+
+          <InputContainer
+            required
+            type="text"
+            placeholder="choose your state"
+            onChange=""
+            isInvalid=""
+          />
         </div>
+
         <div className="row form-row">
-          <InputContainer />
-          {/* ^^PASSWORD^^ */}
-          <InputContainer />
-          {/* ^^CONFIRM PASSWORD^^ */}
+          <InputContainer
+            required
+            type="password"
+            placeholder="password"
+            onChange=""
+            isInvalid=""
+          />
+
+          <InputContainer
+            required
+            type="password"
+            placeholder="confirm password"
+            onChange=""
+            isInvalid=""
+          />
         </div>
         <div className="row form-row">
           <Buttons />
