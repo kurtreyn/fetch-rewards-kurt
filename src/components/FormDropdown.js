@@ -12,15 +12,15 @@ export default function FormDropdown({
   errors,
   fetchForm,
 }) {
-  let occ;
-  let stat;
-
-  function mapIt(things, match) {
+  function mapIt(toMap, matchThis, selectWhat) {
     let items = '';
-    items = things.map((thing) => {
-      return `<option>${thing}</option>`;
+    var option = document.createElement('option');
+    option.text = `Select ${selectWhat}`;
+    document.querySelector(matchThis).add(option);
+    items = toMap.map((mapped) => {
+      return ` <option>${mapped}</option>`;
     });
-    document.querySelector(match).insertAdjacentHTML('afterbegin', items);
+    document.querySelector(matchThis).insertAdjacentHTML('afterbegin', items);
   }
 
   useEffect(() => {
@@ -34,11 +34,13 @@ export default function FormDropdown({
         })
         .then((data) => {
           if (data) {
-            occ = data.occupations;
-            stat = data.states;
-            console.log(`occ is: ${occ}`);
-            mapIt(occ, '#occupations-field');
-            mapIt(stat, '#states-field');
+            const occupationList = data.occupations;
+            const statesList = data.states;
+            const stateNames = statesList.map((stateName) => {
+              return stateName.name;
+            });
+            mapIt(occupationList, '#occupations-field', `Occupation`);
+            mapIt(stateNames, '#states-field', `State`);
           }
         })
         .catch((err) => {

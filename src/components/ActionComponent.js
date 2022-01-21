@@ -4,45 +4,6 @@ export function testClick() {
   console.log('clicked');
 }
 
-export function mapAPI(items, id) {
-  items = '';
-  items.map((item) => {
-    return `<option>${item}</option>`;
-  });
-  document.querySelector(`#${id}`).insertAdjacentHTML('afterbegin', `${items}`);
-}
-
-export async function fetchForm() {
-  fetch(`https://frontend-take-home.fetchrewards.com/form`, {
-    method: 'GET',
-  })
-    .then((response) => {
-      console.log(response);
-      return response.json();
-    })
-    .then((data) => {
-      if (data) {
-        const occupations = data.occupations.map((occupation) => {
-          return `<option>${occupation}</option>`;
-        });
-        document
-          .querySelector('#occupations-field')
-          .insertAdjacentHTML('afterbegin', occupations);
-
-        const stateArray = data.states;
-        const states = stateArray.map((state) => {
-          return `<option>${state.name}</option>`;
-        });
-        document
-          .querySelector('#states-field')
-          .insertAdjacentHTML('afterbegin', states);
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-    });
-}
-
 export const findFormErrors = ({ form, errors }) => {
   const { name, email, password, passconfirm, occupation, state } = form;
   const newErrors = {};

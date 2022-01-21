@@ -7,7 +7,6 @@ import { Form } from 'react-bootstrap';
 import {
   fetchForm,
   handleSubmit,
-  setField,
   findFormErrors,
   mapAPI,
   testClick,
@@ -80,15 +79,6 @@ export default function PageComponent() {
               isInvalid=""
               id="states-field"
             />
-            {/* <Form.Control
-              as="select"
-              aria-label="select state"
-              id="states-field"
-              onChange={(e) => setField('state', e.target.value.trim())}
-              isInvalid={!!errors.state}
-            >
-              <option>Select State</option>
-            </Form.Control> */}
           </div>
         </div>
 
