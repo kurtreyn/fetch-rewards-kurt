@@ -56,8 +56,8 @@ export default function PageComponent() {
     } else if (state === undefined) {
       newErrors.state = 'must select a state';
     }
-    console.log(`occupation: ${form.occupation}`);
-    console.log(`state: ${form.state}`);
+    // console.log(`occupation: ${form.occupation}`);
+    // console.log(`state: ${form.state}`);
 
     return newErrors;
   };
@@ -89,6 +89,9 @@ export default function PageComponent() {
           console.log('Request succeeded with JSON response', data);
           if (data.status === 200) {
             alert(`Thank you for your submission, ${form.name}`);
+            // console.log(form);
+            setForm('');
+            // console.log(form);
           } else {
             alert('Submission was unsuccessful');
           }
