@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
-function mapAPI(items, id) {
+export function mapAPI(items, id) {
+  items = '';
   items.map((item) => {
     return `<option>${item}</option>`;
   });
   document.querySelector(`#${id}`).insertAdjacentHTML('afterbegin', `${items}`);
 }
 
-export async function fetchForm(e, props) {
-  e.preventDefault();
+export async function fetchForm() {
+  // e.preventDefault();
   fetch(`https://frontend-take-home.fetchrewards.com/form`, {
     method: 'GET',
   })
@@ -18,9 +19,6 @@ export async function fetchForm(e, props) {
     })
     .then((data) => {
       if (data) {
-        // console.log(`data is ${data.occupations}`);
-        // props.occup.push(data.occupations);
-        // console.log(props.occup);
         const occupations = data.occupations.map((occupation) => {
           return `<option>${occupation}</option>`;
         });
