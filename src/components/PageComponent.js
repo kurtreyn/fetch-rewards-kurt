@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import HeaderComponent from './HeaderComponent';
-import InputContainer from './InputContainer';
-import DropdownContainer from './DropdownContainer';
+import FormInput from './FormInput';
+import FormDropdown from './FormDropdown';
 import Buttons from './Buttons';
+import { Form } from 'react-bootstrap';
 import {
   fetchForm,
   handleSubmit,
   setField,
   findFormErrors,
   mapAPI,
+  testClick,
 } from './ActionComponent';
 
 export default function PageComponent() {
@@ -29,41 +31,6 @@ export default function PageComponent() {
       });
   };
 
-  useEffect(() => {
-    async function fetchForm() {
-      fetch(`https://frontend-take-home.fetchrewards.com/form`, {
-        method: 'GET',
-      })
-        .then((response) => {
-          console.log(response);
-          return response.json();
-        })
-        .then((data) => {
-          if (data) {
-            const occupations = data.occupations.map((occupation) => {
-              return `<option>${occupation}</option>`;
-            });
-            document
-              .querySelector('#occupations-field')
-              .insertAdjacentHTML('afterbegin', occupations);
-
-            const stateArray = data.states;
-            const states = stateArray.map((state) => {
-              return `<option>${state.name}</option>`;
-            });
-            document
-              .querySelector('#states-field')
-              .insertAdjacentHTML('afterbegin', states);
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      console.log(document.querySelector('#states-field'));
-    }
-    fetchForm();
-  }, []);
-
   return (
     <>
       <div className="container-fluid">
@@ -71,64 +38,83 @@ export default function PageComponent() {
       </div>
       <div className="container form-container">
         <div className="row form-row">
-          <InputContainer
-            required
-            type="text"
-            placeholder="full name"
-            onChange={(e) => setField('name', e.target.value.trim())}
-            isInvalid=""
-          />
+          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-col">
+            <FormInput
+              required
+              type="text"
+              placeholder="full name"
+              onChange={(e) => setField('name', e.target.value.trim())}
+              isInvalid=""
+            />
+          </div>
 
-          <InputContainer
-            required
-            type="text"
-            placeholder="email"
-            onChange=""
-            isInvalid=""
-          />
+          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-col">
+            <FormInput
+              required
+              type="text"
+              placeholder="email"
+              onChange={(e) => setField('email', e.target.value.trim())}
+              isInvalid=""
+            />
+          </div>
         </div>
 
         <div className="row form-row">
-          <DropdownContainer
-            as="select"
-            required
-            type="text"
-            placeholder="choose your occupation"
-            onChange=""
-            isInvalid=""
-            id="occupations-field"
-          />
+          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-col">
+            <FormDropdown
+              required
+              type="select"
+              placeholder="occupation"
+              onChange=""
+              isInvalid=""
+              id="occupations-field"
+            />
+          </div>
 
-          <DropdownContainer
-            as="select"
-            required
-            type="text"
-            placeholder="choose your state"
-            onChange=""
-            isInvalid=""
-            id="states-field"
-          />
+          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-col">
+            <FormDropdown
+              required
+              type="select"
+              placeholder="state"
+              onChange=""
+              isInvalid=""
+              id="states-field"
+            />
+            {/* <Form.Control
+              as="select"
+              aria-label="select state"
+              id="states-field"
+              onChange={(e) => setField('state', e.target.value.trim())}
+              isInvalid={!!errors.state}
+            >
+              <option>Select State</option>
+            </Form.Control> */}
+          </div>
         </div>
 
         <div className="row form-row">
-          <InputContainer
-            required
-            type="password"
-            placeholder="password"
-            onChange=""
-            isInvalid=""
-          />
+          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-col">
+            <FormInput
+              required
+              type="password"
+              placeholder="password"
+              onChange={(e) => setField('password', e.target.value.trim())}
+              isInvalid=""
+            />
+          </div>
 
-          <InputContainer
-            required
-            type="password"
-            placeholder="confirm password"
-            onChange=""
-            isInvalid=""
-          />
+          <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 form-col">
+            <FormInput
+              required
+              type="password"
+              placeholder="confirm password"
+              onChange={(e) => setField('passconfirm', e.target.value.trim())}
+              isInvalid=""
+            />
+          </div>
         </div>
         <div className="row form-row">
-          <Buttons />
+          <Buttons onClick={handleSubmit} />
         </div>
       </div>
     </>

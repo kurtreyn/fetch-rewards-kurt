@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
+export function testClick() {
+  console.log('clicked');
+}
+
 export function mapAPI(items, id) {
   items = '';
   items.map((item) => {
@@ -39,8 +43,8 @@ export async function fetchForm() {
     });
 }
 
-export const findFormErrors = ({ ...form }) => {
-  const { name, email, password, occupation, state } = form;
+export const findFormErrors = ({ form, errors }) => {
+  const { name, email, password, passconfirm, occupation, state } = form;
   const newErrors = {};
   if (!name || name === '') {
     newErrors.name = 'name cannot be blank';
@@ -48,13 +52,21 @@ export const findFormErrors = ({ ...form }) => {
     newErrors.name = 'name is too long';
   } else if (!email || email === '') {
     newErrors.email = 'email cannot be blank';
+  } else if (!email.includes('@')) {
+    newErrors.email = 'email must contain and @ symbol';
   } else if (!password || password === '') {
     newErrors.password = 'password cannot be blank';
   } else if (password.length < 6) {
     newErrors.password = 'password must be at least 6 characters';
-  } else if (occupation === 'Select Occupation') {
+  } else if (password !== passconfirm) {
+    newErrors.passconfirm = 'passwords do not match';
+  } else if (!occupation || occupation === 'Select Occupation') {
     newErrors.occupation = 'must select an occupation';
+  } else if (!state || state === 'Select State') {
+    newErrors.state = 'must select a state';
   }
+  console.log(`occupation: ${form.occupation}`);
+  console.log(`state: ${form.state}`);
 
   return newErrors;
 };
@@ -84,11 +96,6 @@ export async function handleSubmit(e, props) {
       .then((data) => {
         console.log('Request succeeded with JSON response', data);
         if (data.status === 200) {
-          props.setName('');
-          props.setEmail('');
-          props.setPassword('');
-          props.setOccupation('');
-          props.setState('');
           alert('Thank you for your submission');
         } else {
           props.setMessage('Submission was unsuccessful');
