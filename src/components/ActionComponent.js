@@ -32,11 +32,11 @@ export const findFormErrors = ({ form, errors }) => {
   return newErrors;
 };
 
-export async function handleSubmit(e, props) {
+export async function handleSubmit(e, { form, errors, setErrors }) {
   e.preventDefault();
   const newErrors = findFormErrors();
   if (Object.keys(newErrors).length > 0) {
-    props.setErrors(newErrors);
+    setErrors(newErrors);
   } else {
     const response = await fetch(
       `https://frontend-take-home.fetchrewards.com/form`,
@@ -46,11 +46,12 @@ export async function handleSubmit(e, props) {
           'Content-type': 'application/json',
         },
         body: JSON.stringify({
-          name: props.name,
-          email: props.email,
-          password: props.password,
-          occupation: props.occupation,
-          state: props.state,
+          name: form.name,
+          email: form.email,
+          password: form.password,
+          passconfirm: form.passconfirm,
+          occupation: form.occupation,
+          state: form.state,
         }),
       }
     )
@@ -59,7 +60,6 @@ export async function handleSubmit(e, props) {
         if (data.status === 200) {
           alert('Thank you for your submission');
         } else {
-          props.setMessage('Submission was unsuccessful');
           alert('Submission was unsuccessful');
         }
       })
