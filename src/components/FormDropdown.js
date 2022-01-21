@@ -10,8 +10,19 @@ export default function FormDropdown({
   isInvalid,
   id,
   errors,
-  fetchForm
+  fetchForm,
 }) {
+  let occ;
+  let stat;
+
+  function mapIt(things, match) {
+    let items = '';
+    items = things.map((thing) => {
+      return `<option>${thing}</option>`;
+    });
+    document.querySelector(match).insertAdjacentHTML('afterbegin', items);
+  }
+
   useEffect(() => {
     async function fetchForm() {
       fetch(`https://frontend-take-home.fetchrewards.com/form`, {
@@ -23,20 +34,11 @@ export default function FormDropdown({
         })
         .then((data) => {
           if (data) {
-            const occupations = data.occupations.map((occupation) => {
-              return `<option>${occupation}</option>`;
-            });
-            document
-              .querySelector('#occupations-field')
-              .insertAdjacentHTML('afterbegin', occupations);
-
-            const stateArray = data.states;
-            const states = stateArray.map((state) => {
-              return `<option>${state.name}</option>`;
-            });
-            document
-              .querySelector('#states-field')
-              .insertAdjacentHTML('afterbegin', states);
+            occ = data.occupations;
+            stat = data.states;
+            console.log(`occ is: ${occ}`);
+            mapIt(occ, '#occupations-field');
+            mapIt(stat, '#states-field');
           }
         })
         .catch((err) => {
@@ -53,7 +55,7 @@ export default function FormDropdown({
           <Form.Control
             as="select"
             required={required}
-            type={type}
+            type="select"
             placeholder={placeholder}
             onChange={onChange}
             isInvalid={isInvalid}
