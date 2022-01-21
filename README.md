@@ -2,6 +2,8 @@
 
 ## by: Kurt Reynolds
 
+### created with React.js using React Bootstrap
+
 ---
 
 https://fetch-hiring.s3.amazonaws.com/frontend.html
@@ -41,8 +43,10 @@ A live version of the project can be found here: https://frontendtakehomekurtrey
 
 - - ** bug has been fixed **
 
-## Updates
+## Updates 01.19.2022
 
 - added useEffect so that API data is loaded with page
 - added password confirmation input (functionality logic needs to be setup)
 - changed input type for password so that input is masked
+- refactored components to be reusable
+- updated style
