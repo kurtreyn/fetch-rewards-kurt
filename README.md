@@ -40,6 +40,7 @@ A live version of the project can be found here: https://frontendtakehomekurtrey
 - the code is functioning , however there are a several things that still need to be done.
 - - refactor the code in order to make it more readable
 - - there is a bug that needs to be fixed: if user does not make a selection on occupation, tries to submit the form, user will get an error, if user then selects an occupation and tries to resubmit, the form will not submit. a page refresh is needed to continue. same issue with state dropdown. I will work to resolv the bug, however, in the interest of time, I am submitting the code in present iteration for consideration for the position.
+
 - - ** bug has been fixed **
 
 ## Updates 01.19.2022
