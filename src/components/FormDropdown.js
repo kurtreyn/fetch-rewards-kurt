@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { fetchForm, handleSubmit, findFormErrors } from './ActionComponent';
 import { Form } from 'react-bootstrap';
 
-export default function FormInput({
+export default function FormDropdown({
   required,
-  as,
   type,
   placeholder,
   onChange,
@@ -16,7 +15,7 @@ export default function FormInput({
       <Form>
         <Form.Group>
           <Form.Control
-            as={as}
+            as="select"
             required={required}
             type={type}
             placeholder={placeholder}
@@ -24,7 +23,7 @@ export default function FormInput({
             isInvalid={isInvalid}
             id={id}
           />
-
+          <option>{placeholder}</option>
           <Form.Control.Feedback type="invalid">ERRORS</Form.Control.Feedback>
         </Form.Group>
       </Form>

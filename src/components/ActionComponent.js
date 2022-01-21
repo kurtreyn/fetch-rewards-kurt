@@ -9,7 +9,6 @@ export function mapAPI(items, id) {
 }
 
 export async function fetchForm() {
-  // e.preventDefault();
   fetch(`https://frontend-take-home.fetchrewards.com/form`, {
     method: 'GET',
   })
@@ -23,7 +22,7 @@ export async function fetchForm() {
           return `<option>${occupation}</option>`;
         });
         document
-          .querySelector('[data-occupations]')
+          .querySelector('#occupations-field')
           .insertAdjacentHTML('afterbegin', occupations);
 
         const stateArray = data.states;
@@ -31,7 +30,7 @@ export async function fetchForm() {
           return `<option>${state.name}</option>`;
         });
         document
-          .querySelector('[data-states]')
+          .querySelector('#states-field')
           .insertAdjacentHTML('afterbegin', states);
       }
     })
@@ -102,15 +101,18 @@ export async function handleSubmit(e, props) {
   }
 }
 
-export const setField = (props) => (field, value) => {
-  props.setForm({
-    ...props.form,
-    [field]: value,
-  });
-
-  if (!!props.errors[field])
-    props.setErrors({
-      ...props.errors,
-      [field]: null,
+export const setField =
+  ({ form, setForm, errors, setErrors }) =>
+  (field, value) => {
+    console.log(field, value);
+    setForm({
+      ...form,
+      [field]: value,
     });
-};
+
+    if (!!errors[field])
+      setErrors({
+        ...errors,
+        [field]: null,
+      });
+  };
