@@ -32,7 +32,7 @@ export const findFormErrors = ({ form, errors }) => {
   return newErrors;
 };
 
-export async function handleSubmit(e, { form, errors, setErrors }) {
+export async function handleSubmit(e, { form,errors, setErrors }) {
   e.preventDefault();
   const newErrors = findFormErrors();
   if (Object.keys(newErrors).length > 0) {
