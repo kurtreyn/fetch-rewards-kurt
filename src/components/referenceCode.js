@@ -15,6 +15,7 @@ export default function FormComponent() {
   const [errors, setErrors] = useState({});
 
   const setField = (field, value) => {
+    console.log(errors);
     setForm({
       ...form,
       [field]: value,

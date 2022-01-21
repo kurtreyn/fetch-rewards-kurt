@@ -15,13 +15,6 @@ import {
 export default function PageComponent() {
   const [form, setForm] = useState({});
   const [errors, setErrors] = useState({});
-  const [name, setName] = useState('Enter full name');
-  const [email, setEmail] = useState('email');
-  const [password, setPassword] = useState('password');
-  const [passconfirm, setPassconfirm] = useState('confirm password');
-  const [occupation, setOccupation] = useState('select occupation');
-  const [state, setState] = useState('');
-  const [message, setMessage] = useState('');
 
   const setField = (field, value) => {
     // console.log(field, value);
@@ -35,7 +28,6 @@ export default function PageComponent() {
         ...errors,
         [field]: null,
       });
-    // console.log(form);
   };
 
   const findFormErrors = () => {
@@ -57,7 +49,11 @@ export default function PageComponent() {
       newErrors.passconfirm = 'passwords do not match';
     } else if (!occupation || occupation === 'Select Occupation') {
       newErrors.occupation = 'must select an occupation';
+    } else if (occupation === undefined) {
+      newErrors.occupation = 'must select an occupation';
     } else if (!state || state === 'Select State') {
+      newErrors.state = 'must select a state';
+    } else if (state === undefined) {
       newErrors.state = 'must select a state';
     }
     console.log(`occupation: ${form.occupation}`);
@@ -80,25 +76,20 @@ export default function PageComponent() {
             'Content-type': 'application/json',
           },
           body: JSON.stringify({
-            name: name,
-            email: email,
-            password: password,
-            occupation: occupation,
-            state: state,
+            name: form.name,
+            email: form.email,
+            password: form.password,
+            passconfirm: form.passconfirm,
+            occupation: form.occupation,
+            state: form.state,
           }),
         }
       )
         .then((data) => {
           console.log('Request succeeded with JSON response', data);
           if (data.status === 200) {
-            setName('');
-            setEmail('');
-            setPassword('');
-            setOccupation('');
-            setState('');
-            alert('Thank you for your submission');
+            alert(`Thank you for your submission, ${form.name}`);
           } else {
-            setMessage('Submission was unsuccessful');
             alert('Submission was unsuccessful');
           }
         })
@@ -121,7 +112,8 @@ export default function PageComponent() {
               type="text"
               placeholder="full name"
               onChange={(e) => setField('name', e.target.value.trim())}
-              isInvalid=""
+              isInvalid={!!errors.name}
+              errors={errors.name}
             />
           </div>
 
@@ -131,7 +123,8 @@ export default function PageComponent() {
               type="text"
               placeholder="email"
               onChange={(e) => setField('email', e.target.value.trim())}
-              isInvalid=""
+              isInvalid={!!errors.email}
+              errors={errors.email}
             />
           </div>
         </div>
@@ -142,9 +135,10 @@ export default function PageComponent() {
               required
               type="select"
               placeholder="occupation"
-              onChange=""
-              isInvalid=""
+              onChange={(e) => setField('occupation', e.target.value.trim())}
+              isInvalid={!!errors.occupation}
               id="occupations-field"
+              errors={errors.occupation}
             />
           </div>
 
@@ -153,9 +147,10 @@ export default function PageComponent() {
               required
               type="select"
               placeholder="state"
-              onChange=""
-              isInvalid=""
+              onChange={(e) => setField('state', e.target.value.trim())}
+              isInvalid={!!errors.state}
               id="states-field"
+              errors={errors.state}
             />
           </div>
         </div>
@@ -167,7 +162,8 @@ export default function PageComponent() {
               type="password"
               placeholder="password"
               onChange={(e) => setField('password', e.target.value.trim())}
-              isInvalid=""
+              isInvalid={!!errors.password}
+              errors={errors.password}
             />
           </div>
 
@@ -177,7 +173,8 @@ export default function PageComponent() {
               type="password"
               placeholder="confirm password"
               onChange={(e) => setField('passconfirm', e.target.value.trim())}
-              isInvalid=""
+              isInvalid={!!errors.passconfirm}
+              errors={errors.passconfirm}
             />
           </div>
         </div>

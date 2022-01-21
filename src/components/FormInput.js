@@ -10,6 +10,7 @@ export default function FormInput({
   onChange,
   isInvalid,
   id,
+  errors,
 }) {
   return (
     <>
@@ -23,9 +24,12 @@ export default function FormInput({
             onChange={onChange}
             isInvalid={isInvalid}
             id={id}
+            errors={errors}
           />
 
-          <Form.Control.Feedback type="invalid">ERRORS</Form.Control.Feedback>
+          <Form.Control.Feedback type="invalid">
+            {errors}
+          </Form.Control.Feedback>
         </Form.Group>
       </Form>
     </>
