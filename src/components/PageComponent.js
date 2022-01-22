@@ -17,7 +17,6 @@ export default function PageComponent() {
   const [errors, setErrors] = useState({});
 
   const setField = (field, value) => {
-    // console.log(field, value);
     setForm({
       ...form,
       [field]: value,
@@ -28,6 +27,20 @@ export default function PageComponent() {
         ...errors,
         [field]: null,
       });
+  };
+
+  const resetField = (field, value) => {
+    setForm({
+      ...form,
+      [field]: value,
+    });
+
+    if (!!errors[field])
+      setErrors({
+        ...errors,
+        [field]: null,
+      });
+    console.log(form);
   };
 
   const findFormErrors = () => {
@@ -90,8 +103,7 @@ export default function PageComponent() {
           if (data.status === 200) {
             alert(`Thank you for your submission, ${form.name}`);
             // console.log(form);
-            setForm('');
-            // console.log(form);
+            resetField();
           } else {
             alert('Submission was unsuccessful');
           }
@@ -100,6 +112,7 @@ export default function PageComponent() {
           console.log('Request failed', error);
         });
     }
+    console.log(form);
   }
 
   return (
