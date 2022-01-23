@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import HeaderComponent from './HeaderComponent';
 import FormInput from './FormInput';
 import FormDropdown from './FormDropdown';
 import Buttons from './Buttons';
-import { Form } from 'react-bootstrap';
-import {
-  fetchForm,
-  handleSubmit,
-  findFormErrors,
-  mapAPI,
-  testClick,
-} from './ActionComponent';
+// import { Form } from 'react-bootstrap';
+// import {
+//   fetchForm,
+//   handleSubmit,
+//   findFormErrors,
+//   mapAPI,
+//   testClick,
+// } from './ActionComponent';
 
 export default function PageComponent() {
   const [form, setForm] = useState({});
@@ -81,23 +81,20 @@ export default function PageComponent() {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
-      const response = await fetch(
-        `https://frontend-take-home.fetchrewards.com/form`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: form.name,
-            email: form.email,
-            password: form.password,
-            passconfirm: form.passconfirm,
-            occupation: form.occupation,
-            state: form.state,
-          }),
-        }
-      )
+      await fetch(`https://frontend-take-home.fetchrewards.com/form`, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          password: form.password,
+          passconfirm: form.passconfirm,
+          occupation: form.occupation,
+          state: form.state,
+        }),
+      })
         .then((data) => {
           console.log('Request succeeded with JSON response', data);
           if (data.status === 200) {
