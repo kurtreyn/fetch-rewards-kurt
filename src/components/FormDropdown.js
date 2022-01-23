@@ -12,14 +12,9 @@ export default function FormDropdown({
   errors,
   fetchForm,
 }) {
-  // const [occList, setOccList] = useState([]);
-  // const [staList, setStaList] = useState([]);
-  // const [currentOcc, setCurrentOcc] = useState(1);
-  // const [occPerPage, setOccPerPage] = useState(10);
-
   function mapIt(toMap, matchThis, selectWhat) {
     let items = '';
-    var option = document.createElement('option');
+    let option = document.createElement('option');
     option.text = `Select ${selectWhat}`;
     document.querySelector(matchThis).add(option);
     items = toMap.map((mapped) => {
@@ -40,7 +35,7 @@ export default function FormDropdown({
         .then((data) => {
           if (data) {
             const occupationList = data.occupations;
-            // setOccList(occupationList);
+
             const statesList = data.states;
             const stateNames = statesList.map((stateName) => {
               return stateName.name;
